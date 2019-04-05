@@ -1,7 +1,9 @@
 ﻿using IronPython.Hosting;
+using IronPython.Runtime;
 using Microsoft.Scripting.Hosting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,8 +57,9 @@ namespace IronPythonTests
 
         static void Main(string[] args)
         {
+            //MemoryStream
             //for (int i = 0; i < 3; i++)
-                //engine.Execute("l = [i for i in range(10000000)]", engine.CreateScope());
+            //engine.Execute("l = [i for i in range(10000000)]", engine.CreateScope());
             //GC.WaitForFullGCComplete();
             ServerApi.Hooks.NetGetData.Register(new kek(null), _ => { Console.WriteLine("ayyyyyy"); });
             engine.Execute("print('started')", scope);
@@ -69,6 +72,9 @@ namespace IronPythonTests
                     ServerApi.Hooks.NetGetData.Invoke(new GetDataEventArgs());
                     TShockAPI.GetDataHandlers.ChestOpen += um;
                     TShockAPI.GetDataHandlers.ChestOpen.Invoke(333, new TShockAPI.GetDataHandlers.ChestOpenEventArgs());
+                    scope.GetVariable("cmdF")("THIS IS FROM PYTHON FUNCTION");
+                    PythonTuple o = scope.GetVariable("tmpF")();
+                    Console.WriteLine(o);
                 }
                 catch (Exception e)
                 {
