@@ -1,5 +1,6 @@
 ﻿using IronPython.Hosting;
 using IronPython.Runtime;
+using IronPython.Runtime.Operations;
 using Microsoft.Scripting.Hosting;
 using System;
 using System.Collections.Generic;
@@ -75,6 +76,13 @@ namespace IronPythonTests
                     scope.GetVariable("cmdF")("THIS IS FROM PYTHON FUNCTION");
                     PythonTuple o = scope.GetVariable("tmpF")();
                     Console.WriteLine(o);
+                    dynamic f = scope.GetVariable("changingF");
+                    f();
+                    //Console.WriteLine(DefaultContext.Default.GlobalScope);
+                    //PythonCalls.Call(DefaultContext.Default, f);
+                    //engine.Execute("changingF()", scope);
+                    //engine.Operations.InvokeMember(f, "changingF");
+                    Console.WriteLine(scope.GetVariable("asd"));
                 }
                 catch (Exception e)
                 {

@@ -1,4 +1,5 @@
 ﻿using IronPython.Hosting;
+using IronPython.Runtime;
 using Microsoft.Scripting.Hosting;
 using Newtonsoft.Json;
 using System;
@@ -40,8 +41,9 @@ namespace MyIronPython
         {
             Scope = Engine.CreateScope();
             Scope.SetVariable("env", this);
+            Scope.SetVariable("me", me);
 
-            if (!ReadEnvironment(me))
+            if (!ReadEnvironment())
                 return false;
 
             CallFunctionByName("OnInit"); // There might not be such function.
@@ -76,7 +78,7 @@ namespace MyIronPython
         #endregion
         #region ReadEnvironment
 
-        public bool ReadEnvironment(object me)
+        public bool ReadEnvironment()
         {
             List<string> scripts = new List<string>();
             foreach (string dir in Directories)
