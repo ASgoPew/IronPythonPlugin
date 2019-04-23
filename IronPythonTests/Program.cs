@@ -20,9 +20,9 @@ namespace IronPythonTests
 
         }
 
-        public void lmao()
+        public void lmao(kek k)
         {
-            Console.WriteLine("EPICCCCCCCC");
+            Console.WriteLine("EPICCCCCCCC: " + k.ToString());
         }
 
         public kek(Main game) : base(game)

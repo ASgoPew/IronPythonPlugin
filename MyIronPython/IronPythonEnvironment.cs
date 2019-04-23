@@ -171,6 +171,12 @@ namespace MyIronPython
         }
 
         #endregion
+        #region GetExceptionTraceback
+
+        public string GetExceptionTraceback(Exception e) =>
+            Engine.GetService<ExceptionOperations>().FormatException(e);
+
+        #endregion
         #region RaiseLuaException
 
         public void RaiseIronPythonException(string name, Exception e)
