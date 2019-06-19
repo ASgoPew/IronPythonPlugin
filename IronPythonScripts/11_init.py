@@ -4,9 +4,9 @@ everyone = TSPlayer.All
 def OnInit(args):
 	puts("INIT")
 
-	#for f in Type.GetFields(GetDataHandlers):
-		#if f.GetValue(None) is None:
-			#f.SetValue(None, f.FieldType())
+	for f in Type.GetFields(GetDataHandlers):
+		if f.GetValue(None) is None:
+			f.SetValue(None, f.FieldType())
 
 	Plugin.Initialize()
 
