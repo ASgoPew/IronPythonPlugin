@@ -31,6 +31,7 @@ namespace IronPythonPlugin
         public IronPythonPlugin(Main game) : base(game)
         {
             Instance = this;
+            Order = 1000;
 
             IronPythonConfig.Load();
         }
