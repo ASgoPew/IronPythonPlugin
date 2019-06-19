@@ -38,7 +38,7 @@ You can also use python from console:
 \from System import *
 \Console.WriteLine("ok")
 ```
-The '\' symbol is defined in config as "command_specifier" and it determines that this is python script.
+The "\\" symbol is defined in config as "command_specifier" and it determines that this is python script.
 You can use it even from in-game chat with the same syntax if you have execute permission (see config).
 Read about IronPython integration to .NET [here](https://ironpython.net/documentation/dotnet/).
 This repository already contains a [folder](https://github.com/ASgoPew/IronPythonPlugin/tree/master/Scripts) with some basic scripts.
