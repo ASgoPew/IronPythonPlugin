@@ -1,7 +1,8 @@
 # IronPythonPlugin
 
 ## About
-This plugin allows you to use IronPython for your TShock server.
+This plugin allows you to use IronPython for writing and executing scripts for your TShock server.
+You can also run scripts from console or chat for debug purposes.
 
 ## Installing
 To install the plugin you need to do this:
@@ -46,7 +47,7 @@ It is strongly recommended to add folder with these scripts to config at first. 
 ## Basic events
 Plugin will run a python function "OnInit" on plugin initialization (and on "/py reset" command) if such exists and
 "OnClose" on plugin dipose (and on "/py reset" command as well).
-When you try to execute command from console/chat it will first try to execute it through "execute" (see [init](Scripts/init.py)) function if such exists.
+When you try to execute command from console/chat it will first try to execute it through "execute" (see [init](Scripts/11_init.py)) function if such exists.
 Otherwise it will run it directly.
 
 ## py command
