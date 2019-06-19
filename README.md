@@ -1,4 +1,5 @@
 # IronPythonPlugin
+![](ConsoleExample.gif)
 
 ## About
 This plugin allows you to use IronPython for writing and executing scripts for your TShock server.
