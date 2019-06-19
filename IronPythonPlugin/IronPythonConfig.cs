@@ -12,6 +12,9 @@ namespace IronPythonPlugin
 {
     public class IronPythonConfig
     {
+        [JsonIgnore]
+        public static string DefaultScriptsDirectory = "IronPythonScripts";
+
         [JsonProperty("command_specifier")]
         public static string CommandSpecifier = "\\";
         [JsonProperty("control_permission")]
@@ -29,6 +32,17 @@ namespace IronPythonPlugin
 
         public static void Save()
         {
+            if (!Directory.Exists(DefaultScriptsDirectory))
+                Directory.CreateDirectory(DefaultScriptsDirectory);
+            DefaultEnvironment = "main";
+            Environments = new Dictionary<string, IronPythonEnvironment>();
+            Environments.Add("main", new IronPythonEnvironment()
+            {
+                Directories = new string[]
+                {
+                    DefaultScriptsDirectory
+                }
+            });
             string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "iron_python_config.json");
             File.WriteAllText(path, JsonConvert.SerializeObject(new IronPythonConfig(), Formatting.Indented));
         }

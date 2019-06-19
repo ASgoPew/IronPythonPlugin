@@ -18,16 +18,20 @@ namespace MyIronPython
 
         public static bool UseTraceback = true;
 
-        [JsonProperty("name")]
+        [JsonIgnore]
         public string Name;
         [JsonProperty("directories")]
         public string[] Directories;
 
+        [JsonIgnore]
         public static ScriptEngine Engine = Python.CreateEngine();
+        [JsonIgnore]
         public ScriptScope Scope;
 
+        [JsonIgnore]
         public Exception LastException = null;
         //private object Locker = new object();
+        [JsonIgnore]
         public Dictionary<string, object> Data = new Dictionary<string, object>();
 
         public delegate void IronPythonExceptionD(string name, Exception e);

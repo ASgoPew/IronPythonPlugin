@@ -5,12 +5,11 @@ This plugin allows you to use IronPython for writing and executing scripts for y
 You can also run scripts from console or chat for debug purposes.
 
 ## Installing
+This plugin is for TShock version 4.3.26 and uses Newtonsoft.Json version 10.
 To install the plugin you need to do this:
 * Install [IronPython](https://ironpython.net/download/).
-* Add MyIronMython.dll to server root directory.
-* Add IronPythonPlugin.dll to ServerPlugins directory.
-* You will probably need to add all other dlls from the archive to server root
-	directory if plugin raises an error at the beginning.
+* Add MyIronMython.dll from archive to server root directory (near TerrariaServer.exe).
+* Add ServerPlugins/IronPythonPlugin.dll from archive to ServerPlugins directory.
 
 Then run the server and it will create iron_python_config.json, where you probably want to write something like this:
 ```json
