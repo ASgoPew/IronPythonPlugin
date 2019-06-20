@@ -283,14 +283,14 @@ namespace IronPythonPlugin
             {
                 if (pyEnv.CallFunctionByName("perror", e) == null)
                 {
-                    player.SendErrorMessage(e.ToString());
+                    //player.SendErrorMessage(e.ToString());
                     player.SendErrorMessage(pyEnv.GetExceptionTraceback(e));
                 }
             }
             catch (Exception e2)
             {
-                player.SendErrorMessage(e.ToString());
                 player.SendErrorMessage($"Error at perror: {e2}");
+                player.SendErrorMessage(e.ToString());
             }
         }
 
