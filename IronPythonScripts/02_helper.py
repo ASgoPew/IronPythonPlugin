@@ -5,7 +5,8 @@ def delayF(f):
 	try:
 		f()
 	except Exception as e:
-		puts(e)
+		#pexception(e)
+		ptraceback()
 	return env.Engine.Execute(script, env.Scope)
 
 def iterate2(arr, f):

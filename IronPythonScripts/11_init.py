@@ -24,14 +24,9 @@ def execute(script, args):
 		script = 'puts(' + script[1:] + ')'
 	elif script.startswith('='):
 		script = 'puts(dir(' + script[1:] + '))'
-	if me is not console:
-		putsc(output_colors["white"], script)
-	#try:
+	putsc(output_colors["white"], script)
 	# Extensions (clr.ImportExtensions) work with env.Engine.Execute but not with exec
 	env.Engine.Execute(script, env.Scope)
-	#exec(script, globals())
-	#except:
-		#puts(traceback.format_exc())
 
 def _hook(hc, h, priority=0):
 	if hc.ToString().startswith('TShockAPI.HandlerList'):

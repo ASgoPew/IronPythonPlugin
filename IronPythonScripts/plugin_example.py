@@ -2,7 +2,7 @@ class PluginExample(Plugin):
 	# Static method for checking if this plugin should be loaded.
 	@staticmethod
 	def Load():
-		return True
+		return False
 
 	# Method will be called automatically on plugin load (on IronPythonPlugin load or /py reset command).
 	def initialize(self):
@@ -35,6 +35,7 @@ class PluginExample(Plugin):
 			this_will_raise_an_error()
 			puts("This won't be printed.")
 		except:
+			#ptraceback()
 			perror(traceback.format_exc(), "\n(THIS IS IronPythonPlugin SCRIPT ERROR EXAMPLE, REMOVE INVALID FUNCTION CALL FROM plugin_example.py OR DISABLE PluginExample)")
 
 	def OnServerChat(self, args):

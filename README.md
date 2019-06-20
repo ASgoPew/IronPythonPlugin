@@ -11,6 +11,7 @@ To install the plugin you need to do this:
 * Install [IronPython](https://ironpython.net/download/).
 * Add MyIronMython.dll from archive to server root directory (near TerrariaServer.exe).
 * Add ServerPlugins/IronPythonPlugin.dll from archive to ServerPlugins directory.
+[*] Highly recommended to add IronPythonScripts folder from archive to server root path (at least at first).
 
 Then run the server and it will create iron_python_config.json, where you probably want to write something like this:
 ```json
@@ -33,15 +34,15 @@ Then run the server and it will create iron_python_config.json, where you probab
 
 ## Usage
 Now you can place .py files in folders specified in config and server will execute them.
-You can also use python from console:
+You can also use python in console:
 ```
 \from System import *
 \Console.WriteLine("ok")
 ```
-The "\\" symbol is defined in config as "command_specifier" and it determines that this is python script.
+The "\\" symbol is defined in config as "command_specifier" and it determines that you are typing python script.
 You can use it even from in-game chat with the same syntax if you have execute permission (see config).
 Read about IronPython integration to .NET [here](https://ironpython.net/documentation/dotnet/).
-This repository already contains a [folder](https://github.com/ASgoPew/IronPythonPlugin/tree/master/Scripts) with some basic scripts.
+This repository already contains a [folder](https://github.com/ASgoPew/IronPythonPlugin/tree/master/IronPythonScripts) with some basic scripts.
 It is strongly recommended to add folder with these scripts to config at first. All examples below imply that.
 
 ## Basic events
