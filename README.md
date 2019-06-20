@@ -11,7 +11,7 @@ To install the plugin you need to do this:
 * Install [IronPython](https://ironpython.net/download/).
 * Add MyIronMython.dll from archive to server root directory (near TerrariaServer.exe).
 * Add ServerPlugins/IronPythonPlugin.dll from archive to ServerPlugins directory.
-[*] Highly recommended to add IronPythonScripts folder from archive to server root path (at least at first).
+* Highly recommended to add IronPythonScripts folder from archive to server root path (at least at first).
 
 Then run the server and it will create iron_python_config.json, where you probably want to write something like this:
 ```json
