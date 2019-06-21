@@ -4,6 +4,7 @@
 ## About
 This plugin allows you to use IronPython for writing and executing scripts for your TShock server.
 You can also run scripts from console or chat for debug purposes.
+Python is a very powerful, flexible and pretty fast scripting language.
 
 ## Installing
 This plugin is for TShock version 4.3.26 and uses Newtonsoft.Json version 10.
