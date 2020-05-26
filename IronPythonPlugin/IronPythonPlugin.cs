@@ -296,4 +296,13 @@ namespace IronPythonPlugin
 
         #endregion
     }
+
+    /*public class A
+    {
+        // Overriding A and calling kek() results in a "LOL: 0" output on 2.7.9 IronPython version.
+        public virtual void kek(int lol = 5)
+        {
+            Console.WriteLine("LOL: " + lol);
+        }
+    }*/
 }

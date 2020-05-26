@@ -60,6 +60,8 @@ namespace MyIronPython
 
         public void Dispose()
         {
+            if (Scope == null)
+                return;
             try
             {
                 CallFunctionByName("OnClose"); // There might not be such function.

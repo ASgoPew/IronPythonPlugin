@@ -65,6 +65,9 @@
       <Name>MyIronPython</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if not exist "$(ProjectDir)_BuildResult" mkdir "$(ProjectDir)_BuildResult"
