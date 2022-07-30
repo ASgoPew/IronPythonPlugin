@@ -49,7 +49,7 @@ It is strongly recommended to add folder with these scripts to config at first. 
 ## Basic events
 Plugin will run a python function "OnInit" on plugin initialization (and on "/py reset" command) if such exists and
 "OnClose" on plugin dipose (and on "/py reset" command as well).
-When you try to execute command from console/chat it will first try to execute it through "execute" (see [init](Scripts/11_init.py)) function if such exists.
+When you try to execute command from console/chat it will first try to execute it through "execute" (see [init](IronPythonScripts/11_init.py)) function if such exists.
 Otherwise it will run it directly.
 
 ## py command
@@ -61,9 +61,9 @@ All plugins using Plugin class (see below) will be uninitialized and then reinit
 Currently existing scripts allow you to do this:
 * Function "puts" that prints all the output to the player who executed the command (in chat) or in console if this is console.
 * Python will have a variable "me" of last (or current) player who executed (or executes) the script or the TSPlayer.Server if this is console.
-* Use a shortcut for print function: "\\1+3" (is the same as "\puts(1+3)") will print "4" in console/chat.
-* Use a shortcut for print object properties function: "\=me" will print all the fields, properties and methods of TSPlayer class.
-* Class "Plugin" for creating python plugins in OOP style that allows you to easily register and automatically unregister hooks and commands (see [plugin example](Scripts/plugin_example.py)).
+* Use a shortcut for print function: "\\\\1+3" (is the same as "\puts(1+3)") will print "4" in console/chat.
+* Use a shortcut for print object properties function: "\\=me" will print all the fields, properties and methods of TSPlayer class.
+* Class "Plugin" for creating python plugins in OOP style that allows you to easily register and automatically unregister hooks and commands (see [plugin example](IronPythonScripts/plugin_example.py)).
 * A few helper functions like "delay", ...
 
 ## Dependencies
