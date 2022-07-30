@@ -76,6 +76,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if not exist "$(ProjectDir)_BuildResult" mkdir "$(ProjectDir)_BuildResult"
-copy /Y "$(TargetDir)$(TargetName).dll" "$(ProjectDir)_BuildResult\$(TargetName).dll</PostBuildEvent>
+copy /Y "$(TargetDir)$(TargetName).dll" "$(ProjectDir)_BuildResult\$(TargetName).dll
+copy /Y "$(TargetDir)IronPython.Modules.dll" "$(ProjectDir)_BuildResult\IronPython.Modules.dll</PostBuildEvent>
   </PropertyGroup>
 </Project>
