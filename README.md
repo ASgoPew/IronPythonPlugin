@@ -53,10 +53,10 @@ It is strongly recommended to add folder with these scripts to config at first. 
 ## Basic events
 Plugin will run a python function "OnInit" on plugin initialization (and on "/py reset" command) if such exists and
 "OnClose" on plugin dipose (and on "/py reset" command as well).
-When you try to execute command from console/chat it will first try to execute it through "execute" (see [init](IronPythonScripts/11_init.py)) function if such exists.
+When you try to execute command from console/chat it will first try to execute it through "execute" (see [11_init.py file](IronPythonScripts/11_init.py)) function if such exists.
 Otherwise it will run it directly.
 
-## py command
+## */py* command
 Plugin adds /py command. You can use /py reset to reset python environment. Environment reset means that all
 variables will be removed and all specified in config scripts would be reexecuted.
 All plugins using Plugin class (see below) will be uninitialized and then reinitialized automatically.
@@ -71,11 +71,18 @@ Currently existing scripts allow you to do this:
 * A few helper functions like "delay", ...
 
 ## Inline scripts
-You can insert script results directly to you chat messages with special syntax (configurable, <<code>> and <<<code>>> by default)
-For example, typing `I state that <<2**10>> is a degree of <<2>>` will result in a chat message: `I state that 1024 is a degree of 2`
-Colors of output can be configured in config as well.
-If you also want to append the executing script itself you can use the corresponding syntax.
-For example, typing `Small list script: <<<[i for i in range(10)]>>>` will result in a chat message: `Small list script: <[i for i in range(10)]: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]>`
+You can insert script results directly to you chat messages with special syntax (configurable, <<...>> and <<<...>>> by default)\
+For example, typing
+```
+I state that <<2**10>> is a degree of <<2>>
+```
+will result in a chat message: `I state that 1024 is a degree of 2`\
+Colors of output can be configured as well. If you also want to append the executing script itself you can use the corresponding syntax.\
+For example, typing
+```
+Small list script: <<<[i for i in range(10)]>>>
+```
+will result in a chat message: `Small list script: <[i for i in range(10)]: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]>`
 
 ## Dependencies
-This plugin uses [3 version of IronPython](https://github.com/IronLanguages/ironpython3)
+This plugin uses [IronPython (version 3.4)](https://github.com/IronLanguages/ironpython3)
