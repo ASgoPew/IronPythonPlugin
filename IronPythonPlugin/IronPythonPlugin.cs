@@ -18,10 +18,10 @@ namespace IronPythonPlugin
     {
         #region Data
 
-        public override string Author => "ASgo";
+        public override string Author => "ASgo & Anzhelika";
         public override string Description => "Plugin that provides IronPython to server development";
         public override string Name => "IronPythonPlugin";
-        public override Version Version => new Version(1, 0, 0, 0);
+        public override Version Version => new Version(2, 0, 0, 0);
 
         public static IronPythonPlugin Instance = null;
         public static string[] IronPythonEnv = new string[Main.maxPlayers + 1];
