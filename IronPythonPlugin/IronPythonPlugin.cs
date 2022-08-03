@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Terraria;
 using TerrariaApi.Server;
@@ -25,6 +26,8 @@ namespace IronPythonPlugin
         public static IronPythonPlugin Instance = null;
         public static string[] IronPythonEnv = new string[Main.maxPlayers + 1];
         public static Dictionary<string, object> Data = new Dictionary<string, object>();
+        private static MethodInfo TextFieldSetter = null;
+        private static MethodInfo CommandFieldSetter = null;
 
         #endregion
 
@@ -75,6 +78,28 @@ namespace IronPythonPlugin
             if (!player.HasPermission(IronPythonConfig.ExecutePermission) || args.Handled)
                 return;
             args.Handled = CheckIronPythonInput(player, args.Text);
+
+            // Replacing script result inside of chat messages
+            MatchCollection matches;
+            if (args.Handled)
+                return;
+            if (TextFieldSetter == null)
+                TextFieldSetter = args.GetType().GetProperty("Text").GetSetMethod(true);
+            try
+            {
+                if ((matches = Regex.Matches(args.Text, IronPythonConfig.InlineCodeWithScriptRegex)).Count > 0)
+                    TextFieldSetter.Invoke(args, new object[] { player.PyEnv().ProcessText(args.Text, matches,
+                        IronPythonConfig.InlineOutputColorHEX, true, IronPythonConfig.InlineScriptColorHEX,
+                        new object[] { player }) });
+                if ((matches = Regex.Matches(args.Text, IronPythonConfig.InlineCodeRegex)).Count > 0)
+                    TextFieldSetter.Invoke(args, new object[] { player.PyEnv().ProcessText(args.Text, matches,
+                        IronPythonConfig.InlineOutputColorHEX, false, IronPythonConfig.InlineScriptColorHEX,
+                        new object[] { player }) });
+            } catch (Exception e)
+            {
+                args.Handled = true;
+                PrintError(player, player.PyEnv(), e);
+            }
         }
 
         public static void OnServerCommand(CommandEventArgs args)
@@ -82,6 +107,28 @@ namespace IronPythonPlugin
             if (args.Handled)
                 return;
             args.Handled = CheckIronPythonInput(TSPlayer.Server, args.Command);
+
+            // Replacing script result inside of console commands
+            MatchCollection matches;
+            if (args.Handled)
+                return;
+            if (CommandFieldSetter == null)
+                CommandFieldSetter = args.GetType().GetProperty("Command").GetSetMethod(true);
+            try
+            {
+                if ((matches = Regex.Matches(args.Command, IronPythonConfig.InlineCodeWithScriptRegex)).Count > 0)
+                    CommandFieldSetter.Invoke(args,
+                        new object[] { TSPlayer.Server.PyEnv().ProcessText(args.Command, matches,
+                        null, true, null, new object[] { TSPlayer.Server }) });
+                if ((matches = Regex.Matches(args.Command, IronPythonConfig.InlineCodeRegex)).Count > 0)
+                    CommandFieldSetter.Invoke(args,
+                        new object[] { TSPlayer.Server.PyEnv().ProcessText(args.Command, matches,
+                        null, false, null, new object[] { TSPlayer.Server }) });
+            } catch (Exception e)
+            {
+                args.Handled = true;
+                PrintError(TSPlayer.Server, TSPlayer.Server.PyEnv(), e);
+            }
         }
 
         public static bool CheckIronPythonInput(TSPlayer player, string text)
@@ -126,7 +173,7 @@ namespace IronPythonPlugin
         {
             try
             {
-                pyEnv.Initialize(player);
+                pyEnv.Initialize(player, IronPythonConfig.IronPythonPath);
                 return true;
             }
             catch (Exception e)
@@ -296,13 +343,4 @@ namespace IronPythonPlugin
 
         #endregion
     }
-
-    /*public class A
-    {
-        // Overriding A and calling kek() results in a "LOL: 0" output on 2.7.9 IronPython version.
-        public virtual void kek(int lol = 5)
-        {
-            Console.WriteLine("LOL: " + lol);
-        }
-    }*/
 }

@@ -41,11 +41,14 @@ namespace MyIronPython
 
         #region Initialize
 
-        public bool Initialize(object me)
+        public bool Initialize(object me, string iron_python_path)
         {
             Scope = Engine.CreateScope();
             Scope.SetVariable("env", this);
             Scope.SetVariable("me", me);
+            Scope.Engine.Execute($@"import sys
+sys.path.append('{iron_python_path}\Lib')
+sys.path.append('{iron_python_path}\Lib\site-packages')");
 
             if (!ReadEnvironment())
                 return false;
@@ -145,16 +148,22 @@ namespace MyIronPython
 
         public object[] RunScript(string script, params object[] args)
         {
-            object[] result = null;
+            object[] result;
             if (Scope.TryGetVariable("execute", out dynamic execute))
-                result = execute(script, args)?.ToArray() ?? new object[0];
-                //Engine.CreateScriptSource()
-                //Engine.Execute($"execute('''{script}''')", Scope);
+            {
+                dynamic _result = execute(script, args);
+                if (_result is PythonTuple tuple)
+                    result = tuple.ToArray();
+                else
+                    result = new object[] { _result };
+            }
             else
             {
-                result = Engine.Execute(script, Scope);
-                if (result == null)
-                    result = new object[0];
+                object _result = Engine.ExecuteAndWrap(script, Scope).Unwrap();
+                if (_result is PythonTuple tuple)
+                    result = tuple.ToArray();
+                else
+                    result = new object[] { _result };
             }
             return result;
         }
@@ -183,7 +192,7 @@ namespace MyIronPython
             Engine.GetService<ExceptionOperations>().FormatException(e);
 
         #endregion
-        #region RaiseLuaException
+        #region RaiseIronPythonException
 
         public void RaiseIronPythonException(string name, Exception e)
         {
@@ -193,22 +202,60 @@ namespace MyIronPython
         #endregion
         #region ProcessText
 
-        public string ProcessText(string text, string pattern, params object[] args)
+        public string ProcessText(string text, MatchCollection matches, string output_color, bool with_script, string script_color, params object[] args)
         {
             int matchEndIndex = 0;
-            string result = "";
+            StringBuilder sb = new StringBuilder();
 
-            foreach (Match match in Regex.Matches(text, pattern))
+            foreach (Match match in matches)
             {
-                result = result + text.Substring(matchEndIndex, match.Index - matchEndIndex);
+                sb.Append(text.Substring(matchEndIndex, match.Index - matchEndIndex));
                 matchEndIndex = match.Index + match.Value.Length;
                 string script = match.Groups[1].Value;
-                object[] executionResult = RunScript("return " + script, args);
+                object[] executionResult = RunScript(script, args);
+                if (with_script)
+                    sb.Append(PaintTerrariaOutput("<" + script + ": ", script_color));
                 if (executionResult != null && executionResult.Length > 0)
                     for (int i = 0; i < executionResult.Length; i++)
-                        result = result + (i > 0 ? ", " : "") + (executionResult[i]?.ToString() ?? "None");
+                        sb.Append((i > 0 ? ", " : "") + PaintTerrariaOutput(PythonToString(executionResult[i]), output_color));
+                if (with_script)
+                    sb.Append(PaintTerrariaOutput(">", script_color));
             }
-            return result + text.Substring(matchEndIndex, text.Length - matchEndIndex);
+            sb.Append(text.Substring(matchEndIndex, text.Length - matchEndIndex));
+            return sb.ToString();
+        }
+
+        public string ProcessText(string text, string pattern, string output_color, bool with_script, string script_color, params object[] args) =>
+            ProcessText(text, Regex.Matches(text, pattern), output_color, with_script, script_color, args);
+
+        #endregion
+        #region PaintTerrariaOutput
+
+        public string PaintTerrariaOutput(string text, string color)
+        {
+            if (color == null)
+                return text;
+            StringBuilder sb = new StringBuilder();
+            var splitted = text.Split(']');
+            for (int i = 0; i < splitted.Length - 1; i++)
+                if (splitted[i].Length > 0)
+                    sb.Append($"[c/{color}:{splitted[i]}][c/{color}:]]");
+                else
+                    sb.Append($"[c/{color}:]]");
+            if (splitted[splitted.Length - 1].Length > 0)
+                sb.Append($"[c/{color}:{splitted[splitted.Length - 1]}]");
+            Console.WriteLine(sb.ToString());
+            return sb.ToString();
+        }
+
+        #endregion
+        #region PythonToString
+
+        public string PythonToString(object o)
+        {
+            if (Scope.TryGetVariable("tostring", out dynamic tostring))
+                return tostring(o);
+            return o.ToString();
         }
 
         #endregion
