@@ -32,7 +32,7 @@ namespace IronPythonPlugin
         public static string InlineCodeRegex = "<<(.*?)>>";
         //language=regex
         [JsonProperty("inline_code_with_script_regex")]
-        public static string InlineCodeWithScriptRegex = "{{(.*?)}}";
+        public static string InlineCodeWithScriptRegex = "<<<(.*?)>>>";
         [JsonProperty("inline_output_color_hex")]
         public static string InlineOutputColorHEX = "ff5500";
         [JsonProperty("inline_script_color_hex")]
