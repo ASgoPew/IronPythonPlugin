@@ -2,19 +2,20 @@ Plugins = []
 
 class Plugin:
 	instance = None
-	_hooks = {}
-	_commands = {}
 
 	def __init__(self):
 		self.__class__.instance = self
+		self._hooks = {}
+		self._commands = {}
+		self._timers = {}
 	def _initialize(self):
 		puts("Initializing " + self.__class__.__name__)
 	def initialize(self):
-		pass
-	def _dispose(self):
 		puts("Disposing " + self.__class__.__name__)
+	def _dispose(self):
 		self.unhook_all()
 		self.remove_all_commands()
+		self.remove_all_timers()
 	def dispose(self):
 		pass
 
@@ -25,13 +26,13 @@ class Plugin:
 		self._hooks[f] = handler_collection
 		_hook(handler_collection, f, *args)
 	def unhook(self, f):
-		hookf = next((x for x in self._hooks if x == f), None)
-		if hookf is not None:
-			_unhook(self._hooks[hookf], hookf)
+		if f in self._hooks:
+			_unhook(self._hooks[f], f)
+			self._hooks.Remove(f)
 		else:
 			raise Exception("Can't deregister hook")
 	def unhook_all(self):
-		for hookf in self._hooks:
+		for hookf in self._hooks.copy():
 			self.unhook(hookf)
 
 	def add_command(self, permission, f, *names):
@@ -42,23 +43,40 @@ class Plugin:
 			try:
 				f(args)
 			except:
-				perror(traceback.format_exc())
+				ptraceback()
 		command = _add_command(permission, cmdF, names)
 		self._commands[f] = command
 		return command
 	def remove_command(self, f):
-		commandf = next((x for x in self._commands if x == f), None)
-		if commandf is not None:
-			_remove_command(self._commands[commandf])
+		if f in self._commands:
+			_remove_command(self._commands[f])
+			self._commands.Remove(f)
 		else:
 			raise Exception("Can't deregister command")
 	def remove_all_commands(self):
-		for commandf in self._commands:
+		for commandf in self._commands.copy():
 			self.remove_command(commandf)
+
+	def add_timer(self, ms, f):
+		if self._timers.ContainsKey(f):
+			self.remove_timer(f)
+			puts('timer is already added, readding...')
+		timer = self._timers[f] = create_timer(ms, f, True)
+		return timer
+	def remove_timer(self, f):
+		if f in self._timers:
+			self._timers[f].Stop()
+			self._timers.Remove(f)
+		else:
+			raise Exception("Can't remove timer")
+	def remove_all_timers(self):
+		for f in self._timers.copy():
+			self.remove_timer(f)
 
 	@staticmethod
 	def Initialize():
-		for name, plugin_class in globals().items():
+		puts('IronPython plugins begin ========================')
+		for name, plugin_class in list(globals().items()):
 			if (type(plugin_class) == type(Plugin) and plugin_class != Plugin and len(plugin_class.__bases__) > 0
 					and plugin_class.__bases__[0] == Plugin and plugin_class.Load()):
 				try:
@@ -67,15 +85,21 @@ class Plugin:
 					plugin._initialize()
 					plugin.initialize()
 				except:
-					perror(traceback.format_exc())
+					ptraceback()
+		puts('IronPython plugins end ==========================')
 	@staticmethod
 	def Dispose():
 		for plugin in Plugins:
 			try:
+				# Removing all hooks, commands and timers after
 				plugin._dispose()
+				# Custom dispose first
 				plugin.dispose()
 			except:
-				perror(traceback.format_exc())
+				ptraceback()
 	@staticmethod
 	def Load():
 		return True
+
+def plugins():
+	return [p.__class__.__name__ for p in Plugins]

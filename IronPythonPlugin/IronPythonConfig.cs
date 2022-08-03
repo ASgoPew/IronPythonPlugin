@@ -21,10 +21,22 @@ namespace IronPythonPlugin
         public static string ControlPermission = "python.control";
         [JsonProperty("execute_permission")]
         public static string ExecutePermission = "python.execute";
+        [JsonProperty("iron_python_path")]
+        public static string IronPythonPath = "C:\\Program Files\\IronPython 3.4";
         [JsonProperty("default_environment")]
         public static string DefaultEnvironment;
         [JsonProperty("untrusted_environment")]
         public static string UntrustedEnvironment;
+        //language=regex
+        [JsonProperty("inline_code_regex")]
+        public static string InlineCodeRegex = "<<(.*?)>>";
+        //language=regex
+        [JsonProperty("inline_code_with_script_regex")]
+        public static string InlineCodeWithScriptRegex = "<<<(.*?)>>>";
+        [JsonProperty("inline_output_color_hex")]
+        public static string InlineOutputColorHEX = "ff5500";
+        [JsonProperty("inline_script_color_hex")]
+        public static string InlineScriptColorHEX = "ffffff";
         [JsonProperty("environments")]
         public static Dictionary<string, IronPythonEnvironment> Environments;
 
@@ -66,8 +78,6 @@ namespace IronPythonPlugin
 
         public static void Update()
         {
-            //if (DefaultLua != null && Environments.Count > 0 && !Environments.ContainsKey(DefaultLua))
-
             if (Environments == null)
                 Environments = new Dictionary<string, IronPythonEnvironment>();
             foreach (var pair in Environments)

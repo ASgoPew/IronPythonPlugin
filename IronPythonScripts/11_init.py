@@ -1,8 +1,11 @@
 console = TSPlayer.Server
 everyone = TSPlayer.All
 
+# Invokes on IronPythonPlugin.Initialize()
 def OnInit(args):
-	puts("INIT")
+	global loaded
+	loaded = True
+	puts("IronPython OnInit ===============================")
 
 	for f in Type.GetFields(GetDataHandlers):
 		if f.GetValue(None) is None:
@@ -11,7 +14,7 @@ def OnInit(args):
 	Plugin.Initialize()
 
 def OnClose(args):
-	puts("CLOSE")
+	puts("IronPython OnClose ==============================")
 
 	Plugin.Dispose()
 
@@ -26,7 +29,7 @@ def execute(script, args):
 		script = 'puts(dir(' + script[1:] + '))'
 	putsc(output_colors["white"], script)
 	# Extensions (clr.ImportExtensions) work with env.Engine.Execute but not with exec
-	env.Engine.Execute(script, env.Scope)
+	return env.Engine.Execute(script, env.Scope)
 
 def _hook(hc, h, priority=0):
 	if hc.ToString().startswith('TShockAPI.HandlerList'):

@@ -29,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -65,9 +66,15 @@
       <Name>MyIronPython</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if not exist "$(ProjectDir)_BuildResult" mkdir "$(ProjectDir)_BuildResult"
-copy /Y "$(TargetDir)$(TargetName).dll" "$(ProjectDir)_BuildResult\$(TargetName).dll</PostBuildEvent>
+copy /Y "$(TargetDir)$(TargetName).dll" "$(ProjectDir)_BuildResult\$(TargetName).dll
+copy /Y "$(TargetDir)IronPython.dll" "$(ProjectDir)_BuildResult\IronPython.dll
+copy /Y "$(TargetDir)Microsoft.Dynamic.dll" "$(ProjectDir)_BuildResult\Microsoft.Dynamic.dll
+copy /Y "$(TargetDir)Microsoft.Scripting.dll" "$(ProjectDir)_BuildResult\Microsoft.Scripting.dll</PostBuildEvent>
   </PropertyGroup>
 </Project>
