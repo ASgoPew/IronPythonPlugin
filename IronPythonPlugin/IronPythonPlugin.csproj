@@ -75,7 +75,6 @@
 copy /Y "$(TargetDir)$(TargetName).dll" "$(ProjectDir)_BuildResult\$(TargetName).dll
 copy /Y "$(TargetDir)IronPython.dll" "$(ProjectDir)_BuildResult\IronPython.dll
 copy /Y "$(TargetDir)Microsoft.Dynamic.dll" "$(ProjectDir)_BuildResult\Microsoft.Dynamic.dll
-copy /Y "$(TargetDir)Microsoft.Scripting.dll" "$(ProjectDir)_BuildResult\Microsoft.Scripting.dll
-</PostBuildEvent>
+copy /Y "$(TargetDir)Microsoft.Scripting.dll" "$(ProjectDir)_BuildResult\Microsoft.Scripting.dll</PostBuildEvent>
   </PropertyGroup>
 </Project>
